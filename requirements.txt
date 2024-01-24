@@ -1,0 +1,13 @@
+fastapi[all]
+PyMuPDF
+pymongo[srv]
+gunicorn
+Flask
+openai
+aiohttp
+boto3
+moviepy
+requests
+python-dotenv
+Flask-CORS
+Flask[async]

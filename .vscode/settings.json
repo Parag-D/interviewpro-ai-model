@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./interviewpro/lib/python3.1/site-packages"
+    ]
+}

@@ -1,0 +1,5 @@
+interviewpro
+video_chunks/
+logs
+__pycache__
+.env
