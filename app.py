@@ -1,5 +1,5 @@
 # app.py
-
+import requests
 from flask import Flask, request, jsonify
 import aiohttp
 import os
@@ -67,7 +67,7 @@ async def generate_question_and_audio():
         resume = content        
 
         # Call OpenAI API for question generation asynchronously
-        chat_response = await generate_question_and_audio_async(resume)
+        chat_response = generate_question_and_audio_async(resume)
 
         # Extract the generated questions from the API response
         questions = chat_response.choices[0].message.content
@@ -86,16 +86,16 @@ async def generate_question_and_audio():
 
         # Call OpenAI API for audio generation asynchronously
         tasks = [generate_audio(cleaned_question) for cleaned_question in cleaned_questions]
-        audio_responses = await asyncio.gather(*tasks)
+        audio_responses = tasks
 
         print(audio_responses)
 
         # Call OpenAI API for audio generation and upload to S3 asynchronously
         tasks = [print(f"Audio for question '{question}' generated") or upload_to_s3(question, response.content) for question, response in zip(question_list, audio_responses)]
 
-    
+        print(tasks)
         # tasks = [upload_to_s3(question, response.content) for question, response in zip(question_list, audio_responses)]
-        audio_urls = await asyncio.gather(*tasks)
+        audio_urls =  tasks
 
         # Structure responseObj
         responseObj = [
@@ -116,16 +116,24 @@ async def generate_question_and_audio():
 
         logger.info("Successfully generated questions and audio.")
 
+        # # Perform POST request to the specified URL with the generated data
+        # url = f"{BACKEND_URL}/"
+        # async with aiohttp.ClientSession() as session:
+        #     async with session.post(url, json=response_data) as post_req:
+        #         post_req_text = await post_req.text()
+
+
         # Perform POST request to the specified URL with the generated data
         url = f"{BACKEND_URL}/"
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=response_data) as post_req:
-                post_req_text = await post_req.text()
+        response = requests.post(url, json=response_data)
+
+        # Access the response text
+        post_req_text = response.text
 
         logger.info("Successfully sent the response_data")
 
         # Extract relevant information for JSON response
-        response_data["post_request_status_code"] = post_req.status
+        # response_data["post_request_status_code"] = response.status
         response_data["post_request_content"] = post_req_text
 
         # return jsonify(response_data)

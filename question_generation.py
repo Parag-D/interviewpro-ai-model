@@ -2,7 +2,7 @@
 
 import sys
 import os
-from openai import AsyncOpenAI
+from openai import OpenAI
 from prompt import question_generation_prompt
 from exception import CustomException
 from dotenv import load_dotenv, find_dotenv
@@ -15,12 +15,12 @@ load_dotenv(find_dotenv())
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
-client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
-async def generate_question_and_audio_async(resume):
+def generate_question_and_audio_async(resume):
     try:
         print("inside question and audio")
-        chat_response = await client.chat.completions.create(
+        chat_response = client.chat.completions.create(
             model="gpt-3.5-turbo-1106",
             response_format={"type": "json_object"},
             messages=[

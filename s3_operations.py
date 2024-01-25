@@ -49,7 +49,7 @@ S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 import re
 import urllib.parse
 
-async def upload_to_s3(question, response_content):
+def upload_to_s3(question, response_content):
     try:
         print("inside upload to s3 baby...")
         # Remove special characters from the question

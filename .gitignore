@@ -2,4 +2,5 @@ interviewpro
 video_chunks/
 logs
 __pycache__
+mockai
 .env
