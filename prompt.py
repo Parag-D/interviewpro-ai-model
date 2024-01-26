@@ -42,12 +42,14 @@ You are an expert interviewer and you have been provided with the interview data
 
 analysis_prompt = """
 You are an expert interviewer and you have been provided with the interview data. Your task is to analyse the interview and provide suggestions to the candidate, goods and bads from the interview.
-provide response in json format.
 also rate the technical, interpersonal skills.
-Don't to generate random information in the response. 
+Don't generate random information in the response. 
+If the answer is not provided or it is a giberish then return "You have not given the interview seriously. Please try again after preparing."
+Make sure to provide the correct and accurate information for overall rating.
 
-Make sure to follow the below given format and do not leave the fields empty:
+Make sure to follow the below given format:
 
+provide response in json format.
 feedback": {
     "strengths": {
      
