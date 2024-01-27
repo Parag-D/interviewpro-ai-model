@@ -15,7 +15,9 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
 def analyze_interview_with_transcript(video_transcript):
- 
+    
+    global_questions = [" ".join(global_question) for global_question in global_questions]
+    
     # Generate chat-based completion'
     chat_response = client.chat.completions.create(
         model="gpt-3.5-turbo",
