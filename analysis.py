@@ -16,7 +16,7 @@ client = OpenAI()
 
 def analyze_interview_with_transcript(video_transcript):
     
-    questions = [" ".join(global_question) for global_question in global_questions]
+    questions = "\n".join([f"{i + 1}. {question}" for i, question in enumerate(global_questions)])
 
     # Generate chat-based completion'
     chat_response = client.chat.completions.create(
