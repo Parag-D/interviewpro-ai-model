@@ -40,10 +40,7 @@ app = Flask(__name__)
 
 CORS(app, origins=['*'])
 
-def clean_question(question):
-    # Add your cleaning logic here
-    cleaned_question = re.sub(r'[^a-zA-Z0-9\s]', '', question)
-    return cleaned_question
+
 
 @app.route('/generate_question_and_audio', methods=['POST'])
 async def generate_question_and_audio():
@@ -67,22 +64,7 @@ async def generate_question_and_audio():
         resume = content        
 
         # Call OpenAI API for question generation asynchronously
-        chat_response = generate_question_and_audio_async(resume)
-
-        # Extract the generated questions from the API response
-        questions = chat_response.choices[0].message.content
-        print("Questions are: ",questions)
-
-        questions_dict = json.loads(questions)
-        print("Keys in Question_dict:", questions_dict.keys())
-
-        # Access the list of questions
-        question_list = questions_dict.get("question", []) or questions_dict.get("questions", [])
-        print("Question_list is", question_list)
-
-
-        # Cleaning questions
-        cleaned_questions = [clean_question(question) for question in question_list]
+        cleaned_questions, question_list = generate_question_and_audio_async(resume)
 
         # Call OpenAI API for audio generation asynchronously
         tasks = [generate_audio(cleaned_question) for cleaned_question in cleaned_questions]
@@ -135,6 +117,8 @@ async def generate_question_and_audio():
         # Extract relevant information for JSON response
         # response_data["post_request_status_code"] = response.status
         response_data["post_request_content"] = post_req_text
+
+        print("response sent successfully")
 
         # return jsonify(response_data)
         return jsonify(responseObj), 200

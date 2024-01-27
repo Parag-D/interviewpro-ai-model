@@ -1,4 +1,5 @@
 import os
+from question_generation import global_questions
 from openai import OpenAI
 from dotenv import find_dotenv, load_dotenv
 from prompt import analysis_prompt
@@ -19,7 +20,7 @@ def analyze_interview_with_transcript(video_transcript):
     chat_response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": analysis_prompt + video_transcript},
+            {"role": "system", "content": analysis_prompt + global_questions + video_transcript},
             # You can add more user messages if needed
             # {"role": "user", "content": "Candidate's response..."},
         ],
