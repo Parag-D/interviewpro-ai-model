@@ -156,6 +156,9 @@ def process_video():
         s3_video_url = data.get('s3_video_url')
         question_id = data.get('questionId')
 
+        print("inside process_video")
+        logger.info("proessing video for analysis.")
+
         # Define paths
         local_video_path = "/Users/paragdarade/Desktop/mockAI/video_chunks/local_video.mp4"
         chunk_output_folder = "video_chunks"
@@ -163,6 +166,8 @@ def process_video():
 
         # Download video from S3
         download_video_from_s3(s3_video_url, local_video_path)
+        print("downloaded the video successfully")
+        logger.info("Downloaded the video from S3.")
 
         # Split the video into chunks
         split_video(local_video_path, chunk_output_folder, chunk_duration_seconds)
@@ -172,12 +177,16 @@ def process_video():
 
         # Process or combine the individual transcripts as needed
         combined_transcript = "\n".join([f"Chunk {i + 1}:\n{transcript}" for i, transcript in enumerate(transcripts)])
+        print("transcript generated", transcripts)
+        logger.info("transcription completed.", transcripts)
 
         logger.info("Video processing completed.")
 
         print("Combined transcript: ", combined_transcript)
 
         analysis = analyze_interview_with_transcript(combined_transcript)
+        logger.info("Analysis completed.", analysis)
+        print("Analysis: ", analysis)
         
         print(analysis)
 
