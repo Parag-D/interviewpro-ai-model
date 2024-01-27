@@ -154,6 +154,7 @@ def process_video():
         # Get the S3 link from the request
         data = request.get_json()
         s3_video_url = data.get('s3_video_url')
+        # questions = data.get('questions')
         question_id = data.get('questionId')
 
         print("inside process_video")
